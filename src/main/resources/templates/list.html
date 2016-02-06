@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout">
+<head>
+    <title>Посты</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div th:each="post : ${posts}" class="list-element">
+        <p th:text="${#dates.format(post.date, 'dd.MM.yyyy')}" class="list-date" />
+        <a th:href="@{/posts/{id}(id = ${post.id})}"><h3 th:text="${post.title}" /></a>
+        <div th:utext="${post.body}" />
+    </div>
+    <nav>
+        <ul class="pager">
+            <li th:if="${hasPreviousPage} == true">
+                <a th:href="@{/pages/{id}(id = ${currentPage} - 1)}">Позже</a>
+            </li>
+            <li th:if="${hasNextPage} == true">
+                <a th:href="@{/pages/{id}(id = ${currentPage} + 1)}">Раньше</a>
+            </li>
+        </ul>
+    </nav>
+</div>
+</body>
+</html>

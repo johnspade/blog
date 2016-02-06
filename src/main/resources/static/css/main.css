@@ -1,0 +1,25 @@
+.post-date {
+    font-style: italic;
+    text-align: right;
+    margin-top: 30px;
+}
+
+.list-date {
+    font-weight: bold;
+}
+
+.list-element {
+    margin-bottom: 50px;
+}
+
+#login-page {
+    position: absolute;
+    width: 400px;
+    left: 50%;
+    margin-left: -200px;
+    top: 30%;
+}
+
+#edit-page {
+    margin-top: 20px;
+}
