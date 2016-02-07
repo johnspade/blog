@@ -12,14 +12,10 @@
     margin-bottom: 50px;
 }
 
-#login-page {
-    position: absolute;
-    width: 400px;
-    left: 50%;
-    margin-left: -200px;
-    top: 30%;
+.service-page {
+    padding: 20px;
 }
 
-#edit-page {
-    margin-top: 20px;
+#edit-btns {
+    margin-bottom: 30px;
 }
