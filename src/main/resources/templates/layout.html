@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
     <link rel="stylesheet" th:href="@{/css/main.css}" />
+    <link href='http://johnspade.ru/favicon.ico' rel='icon' type='image/x-icon' />
     <title layout:title-pattern="$CONTENT_TITLE – $DECORATOR_TITLE">Записки Джона</title>
 </head>
 <body>
@@ -14,19 +15,24 @@
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#nav-collapse-1">
                 <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
+                <span class="icon-bar" />
+                <span class="icon-bar" />
+                <span class="icon-bar" />
             </button>
             <a class="navbar-brand" href="/">Записки Джона</a>
         </div>
         <p class="navbar-text">All work and no play makes John a dull boy</p>
-        <form th:action="@{/logout}" sec:authorize="hasRole('ROLE_ADMIN')" class="navbar-form navbar-left" method="post">
+        <form action="/new" sec:authorize="hasRole('ROLE_ADMIN')" class="navbar-form navbar-left">
+            <button type="submit" class="btn btn-default">Создать</button>
+        </form>
+        <form th:action="@{/logout}" sec:authorize="hasRole('ROLE_ADMIN')" class="navbar-form navbar-left"
+              method="post">
             <button type="submit" class="btn btn-default">Выйти</button>
         </form>
         <div class="collapse navbar-collapse" id="nav-collapse-1">
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="/">Главная</a></li>
+                <li><a href="/contents">Содержание</a></li>
             </ul>
         </div>
     </div>
@@ -35,18 +41,27 @@
 <div class="container">
     <div class="row">
         <div class="col-md-8">
-            <div layout:fragment="content"></div>
+            <div layout:fragment="content" />
         </div>
         <div class="col-md-4">
             <div class="well">
                 <h4>О блоге</h4>
-                <p>Немного о блоге, контакты, приветики</p>
+                <p>Записки о жизни, программировании и видеоиграх.</p>
             </div>
+            <div class="list-group">
+                <a th:each="cat : ${categories}" th:href="@{/posts(category = ${cat.name})}"
+                   class="list-group-item" th:classappend="*{category != null and cat.name == category.name} ? 'active' : ''">
+                    <span class="badge" th:text="${cat.posts.size()}" />
+                    <span th:text="${cat.name}" />
+                </a>
+            </div>
+            <p class="text-center text-muted" th:text="'© johnspade, 2016—' + ${#dates.year(#dates.createNow())}" />
         </div>
     </div>
 </div>
 
 <script th:src="@{/js/jquery-1.11.3.min.js}"></script>
 <script th:src="@{/js/bootstrap.min.js}"></script>
+<script id="dsq-count-scr" src="//johnspadeblog.disqus.com/count.js" async="async"></script>
 </body>
 </html>

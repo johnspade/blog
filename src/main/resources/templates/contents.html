@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout">
+<head>
+    <title>Содержание</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div th:each="cat : ${categories}">
+        <a th:href="@{/posts(category = ${cat.name})}"><h3 th:text="${cat.name}" /></a>
+        <ol>
+            <li th:each="post : ${cat.posts}">
+                <a th:href="@{/posts/{id}(id = ${post.id})}" th:text="${post.title}" />
+            </li>
+        </ol>
+    </div>
+</div>
+</body>
+</html>

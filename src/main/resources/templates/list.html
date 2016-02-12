@@ -6,18 +6,19 @@
 </head>
 <body>
 <div layout:fragment="content">
-    <div th:each="post : ${posts}" class="list-element">
-        <p th:text="${#dates.format(post.date, 'dd.MM.yyyy')}" class="list-date" />
-        <a th:href="@{/posts/{id}(id = ${post.id})}"><h3 th:text="${post.title}" /></a>
+    <div th:each="post : ${posts}" class="list-element" th:with="url = @{/posts/{id}(id = ${post.id})}">
+        <p th:text="${#dates.format(post.date, 'dd.MM.yyyy')}" class="post-date" />
+        <a th:href="${url}"><h3 th:text="${post.title}" /></a>
         <div th:utext="${post.body}" />
+        <p class="comments-link"><a class="label label-default" th:href="${url} + '#disqus_thread'"></a></p>
     </div>
     <nav>
-        <ul class="pager">
+        <ul class="pager" th:with="url = '/posts' + (*{category != null} ? '?category=' + ${category.name} : '')">
             <li th:if="${hasPreviousPage} == true">
-                <a th:href="@{/pages/{id}(id = ${currentPage} - 1)}">Позже</a>
+                <a th:href="@{${url}(page = ${currentPage} - 1)}">Позже</a>
             </li>
             <li th:if="${hasNextPage} == true">
-                <a th:href="@{/pages/{id}(id = ${currentPage} + 1)}">Раньше</a>
+                <a th:href="@{${url}(page = ${currentPage} + 1)}">Раньше</a>
             </li>
         </ul>
     </nav>

@@ -6,14 +6,37 @@
 </head>
 <body>
 <div layout:fragment="content">
-    <h3 th:text="${post.title}" />
+    <div class="page-header">
+        <h3 th:text="${post.title}" />
+    </div>
     <div th:utext="${post.body}" />
-    <p th:text="${#dates.format(post.date, 'dd.MM.yyyy')}" class="post-date" />
+    <p id="post-footer">
+        <span>Опубликовано </span><i><span th:text="${#dates.format(post.date, 'dd.MM.yyyy')}" /></i>
+        <span>  в категории </span>
+        <a th:href="@{/posts(category = ${post.category.name})}" th:text="${post.category.name}" />
+    </p>
     <div sec:authorize="hasRole('ROLE_ADMIN')" id="edit-btns">
         <form class="form-inline" th:object="${post}" th:action="@{/posts/{id}/delete(id = ${post.id})}" th:method="delete">
             <a class="btn btn-default btn-sm" th:href="@{/posts/{id}/edit(id = ${post.id})}">Редактировать</a>
             <button type="submit" class="btn btn-default btn-sm" onclick="return confirm('Удалить пост?')">Удалить</button>
         </form>
+    </div>
+    <div>
+        <div id="disqus_thread"></div>
+        <script th:inline="javascript">
+            /*<![CDATA[*/
+             var disqus_config = function () {
+                this.page.url = /*[[${#httpServletRequest.requestURL.toString()}]]*/ '';
+                this.page.identifier = /*[[${post.id}]]*/ '';
+             };
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = '//johnspadeblog.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+            /*]]>*/
+        </script>
     </div>
 </div>
 </body>
