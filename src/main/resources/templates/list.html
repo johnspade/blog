@@ -13,7 +13,8 @@
         <p class="comments-link"><a class="label label-default" th:href="${url} + '#disqus_thread'"></a></p>
     </div>
     <nav>
-        <ul class="pager" th:with="url = '/posts' + (*{category != null} ? '?category=' + ${category.name} : '')">
+        <ul class="pager"
+            th:with="url = '/posts' + (*{selectedCategory != null} ? '?category=' + ${selectedCategory.name} : '')">
             <li th:if="${hasPreviousPage} == true">
                 <a th:href="@{${url}(page = ${currentPage} - 1)}">Позже</a>
             </li>

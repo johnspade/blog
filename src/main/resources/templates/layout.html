@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
     <link rel="stylesheet" th:href="@{/css/main.css}" />
-    <link href='http://johnspade.ru/favicon.ico' rel='icon' type='image/x-icon' />
     <title layout:title-pattern="$CONTENT_TITLE – $DECORATOR_TITLE">Записки Джона</title>
+    <script type="text/javascript" src="//vk.com/js/api/openapi.js?121"></script>
 </head>
 <body>
 <nav class="navbar navbar-default">
@@ -44,18 +44,44 @@
             <div layout:fragment="content" />
         </div>
         <div class="col-md-4">
-            <div class="well">
+            <div class="sidebar-widget">
                 <h4>О блоге</h4>
-                <p>Записки о жизни, программировании и видеоиграх.</p>
+                <p class="well">
+                    Блог студента-программиста: мысли о жизни, дневниковые записи и заметки о программировании.
+                </p>
             </div>
-            <div class="list-group">
-                <a th:each="cat : ${categories}" th:href="@{/posts(category = ${cat.name})}"
-                   class="list-group-item" th:classappend="*{category != null and cat.name == category.name} ? 'active' : ''">
-                    <span class="badge" th:text="${cat.posts.size()}" />
-                    <span th:text="${cat.name}" />
-                </a>
+            <div class="sidebar-widget">
+                <h4>Категории</h4>
+                <div class="list-group">
+                    <a th:each="category : ${categories}" th:href="@{/posts(category = ${category.name})}"
+                       class="list-group-item"
+                       th:classappend="*{selectedCategory != null and category.name == selectedCategory.name} ? 'active' : ''">
+                        <span class="badge" th:text="${category.posts.size()}" />
+                        <span th:text="${category.name}" />
+                    </a>
+                </div>
             </div>
-            <p class="text-center text-muted" th:text="'© johnspade, 2016—' + ${#dates.year(#dates.createNow())}" />
+            <div class="sidebar-widget">
+                <h4>ВКонтакте</h4>
+                <div id="vk_groups"></div>
+                <script type="text/javascript">
+                    VK.Widgets.Group("vk_groups", {
+                        mode: 1,
+                        width: "auto",
+                        height: "400",
+                        color1: 'ffffff',
+                        color2: '333333',
+                        color3: 'dd4814'
+                    }, 22734810);
+                </script>
+            </div>
+            <div class="sidebar-widget">
+                <p class="text-center text-muted small">
+                    © <a href="http://about.johnspade.ru">johnspade</a>, 2016—
+                    <span th:text="${#dates.year(#dates.createNow())}" /> |
+                    <a href="https://github.com/johnspade/blog">Исходный код на GitHub</a>
+                </p>
+            </div>
         </div>
     </div>
 </div>

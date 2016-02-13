@@ -31,7 +31,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
 		dataSource.setDriverClassName("org.postgresql.Driver");
 		dataSource.setUrl("jdbc:postgresql://" + System.getenv("OPENSHIFT_POSTGRESQL_DB_HOST") + ":"
-				+ System.getenv("OPENSHIFT_POSTGRESQL_DB_PORT") + "/blog");
+				+ System.getenv("OPENSHIFT_POSTGRESQL_DB_PORT") + "/" + System.getenv("PGDATABASE"));
 		dataSource.setUsername(System.getenv("OPENSHIFT_POSTGRESQL_DB_USERNAME"));
 		dataSource.setPassword(System.getenv("OPENSHIFT_POSTGRESQL_DB_PASSWORD"));
 		return dataSource;

@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 import ru.johnspade.dao.Category;
 import ru.johnspade.dao.Post;
@@ -20,7 +22,6 @@ import ru.johnspade.repository.CategoryRepository;
 import ru.johnspade.repository.PostRepository;
 
 import java.util.Collections;
-import java.util.Optional;
 
 @Controller
 public class MainController {
@@ -38,29 +39,29 @@ public class MainController {
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView index() {
-		return posts(Optional.of(1), Optional.empty());
+		return posts(1, null);
 	}
 
 	@RequestMapping(value = "/posts", method = RequestMethod.GET)
-	public ModelAndView posts(@RequestParam(value = "page", required = false) Optional<Integer> pageNumber,
-							  @RequestParam(value = "category", required = false) Optional<String> categoryName) {
+	public ModelAndView posts(@RequestParam(value = "page", required = false) Integer pageNumber,
+							  @RequestParam(value = "category", required = false) String categoryName) {
 		Category category = null;
 		Page<Post> page;
 		ModelAndView modelAndView = new ModelAndView("list");
-		if (!pageNumber.isPresent())
-			pageNumber = Optional.of(1);
-		PageRequest pageRequest = new PageRequest(pageNumber.get() - 1, PAGE_SIZE, Sort.Direction.DESC, "date");
-		if (categoryName.isPresent()) {
-			if (categoryRepository.exists(categoryName.get())) {
-				category = categoryRepository.getOne(categoryName.get());
+		if (pageNumber == null)
+			pageNumber = 1;
+		PageRequest pageRequest = new PageRequest(pageNumber - 1, PAGE_SIZE, Sort.Direction.DESC, "date");
+		if (categoryName != null) {
+			if (categoryRepository.exists(categoryName)) {
+				category = categoryRepository.getOne(categoryName);
 				page = postRepository.findAllByCategory(category, pageRequest);
 			}
 			else
-				page = new PageImpl<>(Collections.emptyList());
+				page = new PageImpl<>(Collections.<Post>emptyList());
 		}
 		else
 			page = postRepository.findAll(pageRequest);
-		modelAndView.addObject("category", category);
+		modelAndView.addObject("selectedCategory", category);
 		modelAndView.addObject("posts", page);
 		modelAndView.addObject("currentPage", page.getNumber() + 1);
 		modelAndView.addObject("hasNextPage", page.hasNext());
@@ -87,7 +88,10 @@ public class MainController {
 
 	@RequestMapping(value = "/posts/{id}", method = RequestMethod.GET)
 	public String read(@PathVariable int id, Model model) {
-		model.addAttribute("post", postRepository.getOne(id));
+		if (postRepository.exists(id))
+			model.addAttribute("post", postRepository.getOne(id));
+		else
+			throw new ResourceNotFoundException("Пост не найден");
 		return "post";
 	}
 
@@ -127,6 +131,20 @@ class CategoriesAdvice {
 	public String categories(Model model) {
 		model.addAttribute("categories", categoryRepository.findAll());
 		return "categories";
+	}
+
+}
+
+@ResponseStatus(value = HttpStatus.NOT_FOUND)
+class ResourceNotFoundException extends RuntimeException {
+
+	@SuppressWarnings("unused")
+	public ResourceNotFoundException() {
+		super();
+	}
+
+	public ResourceNotFoundException(String message) {
+		super(message);
 	}
 
 }

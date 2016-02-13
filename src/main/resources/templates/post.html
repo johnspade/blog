@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorator="layout" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" layout:decorator="layout">
 <head>
     <title th:text="${post.title}" />
 </head>
 <body>
 <div layout:fragment="content">
     <div class="page-header">
-        <h3 th:text="${post.title}" />
+        <h3 th:text="${post.title}">название</h3>
     </div>
     <div th:utext="${post.body}" />
     <p id="post-footer">
@@ -16,23 +16,26 @@
         <a th:href="@{/posts(category = ${post.category.name})}" th:text="${post.category.name}" />
     </p>
     <div sec:authorize="hasRole('ROLE_ADMIN')" id="edit-btns">
-        <form class="form-inline" th:object="${post}" th:action="@{/posts/{id}/delete(id = ${post.id})}" th:method="delete">
+        <form class="form-inline" th:object="${post}" th:action="@{/posts/{id}/delete(id = ${post.id})}"
+              th:method="delete">
             <a class="btn btn-default btn-sm" th:href="@{/posts/{id}/edit(id = ${post.id})}">Редактировать</a>
-            <button type="submit" class="btn btn-default btn-sm" onclick="return confirm('Удалить пост?')">Удалить</button>
+            <button type="submit" class="btn btn-default btn-sm" onclick="return confirm('Удалить пост?')">
+                Удалить
+            </button>
         </form>
     </div>
     <div>
         <div id="disqus_thread"></div>
         <script th:inline="javascript">
             /*<![CDATA[*/
-             var disqus_config = function () {
+            var disqus_config = function () {
                 this.page.url = /*[[${#httpServletRequest.requestURL.toString()}]]*/ '';
                 this.page.identifier = /*[[${post.id}]]*/ '';
-             };
-            (function() {
+            };
+            (function () {
                 var d = document, s = d.createElement('script');
                 s.src = '//johnspadeblog.disqus.com/embed.js';
-                s.setAttribute('data-timestamp', +new Date());
+                s.setAttribute('data-timestamp', + new Date());
                 (d.head || d.body).appendChild(s);
             })();
             /*]]>*/

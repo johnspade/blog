@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout">
+<head>
+    <title>Ошибка</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="alert alert-warning" role="alert">
+        <h3>
+            Код ошибки: <span th:text="${status}" />
+        </h3>
+        <p th:text="${error}" />
+        <p th:if="${message != 'No message available'}">
+            <b>Сообщение:</b> <span th:text="${message}" />
+        </p>
+    </div>
+</div>
+</body>
+</html>
