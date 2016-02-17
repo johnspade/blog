@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
     <link rel="stylesheet" th:href="@{/css/main.css}" />
-    <title layout:title-pattern="$CONTENT_TITLE – $DECORATOR_TITLE">Записки Джона</title>
+    <title layout:title-pattern="$CONTENT_TITLE – $DECORATOR_TITLE" th:text="${title}" />
     <script type="text/javascript" src="//vk.com/js/api/openapi.js?121"></script>
 </head>
 <body>
@@ -19,7 +19,7 @@
                 <span class="icon-bar" />
                 <span class="icon-bar" />
             </button>
-            <a class="navbar-brand" href="/">Записки Джона</a>
+            <a class="navbar-brand" href="/" th:text="${title}" />
         </div>
         <p class="navbar-text">All work and no play makes John a dull boy</p>
         <form action="/new" sec:authorize="hasRole('ROLE_ADMIN')" class="navbar-form navbar-left">
@@ -46,20 +46,15 @@
         <div class="col-md-4">
             <div class="sidebar-widget">
                 <h4>О блоге</h4>
-                <p class="well">
-                    Блог студента-программиста: мысли о жизни, дневниковые записи и заметки о программировании.
-                </p>
+                <p class="well" th:text="${description}" />
             </div>
-            <div class="sidebar-widget">
-                <h4>Категории</h4>
-                <div class="list-group">
-                    <a th:each="category : ${categories}" th:href="@{/posts(category = ${category.name})}"
-                       class="list-group-item"
-                       th:classappend="*{selectedCategory != null and category.name == selectedCategory.name} ? 'active' : ''">
-                        <span class="badge" th:text="${category.posts.size()}" />
-                        <span th:text="${category.name}" />
-                    </a>
-                </div>
+            <div class="sidebar-widget" th:if="${!#lists.isEmpty(tags)}" th:with="coef = ${80.0 / tags[0].posts.size()}">
+                <h4>Ярлыки</h4>
+                <span th:each="tag : ${tags}"
+                      th:style="'font-size: ' + ${#numbers.formatDecimal(80 + tag.posts.size() * coef, 0, 0)} + '%;'">
+                    <a th:href="@{/posts(tag = ${tag.name})}"><span th:text="${tag.name}" /></a>&nbsp;
+                    <span th:text="|(${tag.posts.size()}) |" />
+                </span>
             </div>
             <div class="sidebar-widget">
                 <h4>ВКонтакте</h4>

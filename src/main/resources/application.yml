@@ -1,0 +1,10 @@
+spring:
+  jpa:
+    database: POSTGRESQL
+    hibernate.ddl-auto: none
+  datasource:
+    platform: postgres
+application:
+  url: http://blog-johnspade.rhcloud.com
+  title: Записки Джона
+  description: "Блог студента-программиста: мысли о жизни, дневниковые записи и заметки о программировании"

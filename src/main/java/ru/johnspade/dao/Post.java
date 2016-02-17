@@ -1,14 +1,18 @@
 package ru.johnspade.dao;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -27,9 +31,10 @@ public class Post {
 	@Column(nullable = false, columnDefinition = "text")
 	private String body;
 
-	@ManyToOne
-	@JoinColumn(name = "category_name")
-	private Category category;
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "tag_post", joinColumns = @JoinColumn(name = "post_id"),
+			inverseJoinColumns = @JoinColumn(name = "tag_name"))
+	private List<Tag> tags;
 
 	@SuppressWarnings("unused")
 	public Post(String title, String body) {
@@ -74,12 +79,10 @@ public class Post {
 		this.body = body;
 	}
 
-	public Category getCategory() {
-		return category;
-	}
-
-	public void setCategory(Category category) {
-		this.category = category;
+	public List<Tag> getTags() {
+		if (tags == null)
+			tags = new ArrayList<>();
+		return tags;
 	}
 
 }

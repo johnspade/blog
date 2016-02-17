@@ -6,10 +6,10 @@
 </head>
 <body>
 <div layout:fragment="content">
-    <div th:each="category : ${categories}">
-        <a th:href="@{/posts(category = ${category.name})}"><h3 th:text="${category.name}" /></a>
+    <div th:each="tag : ${tags}">
+        <a th:href="@{/posts(category = ${tag.name})}"><h3 th:text="${tag.name}" /></a>
         <ol>
-            <li th:each="post : ${category.posts}">
+            <li th:each="post : ${tag.posts}">
                 <a th:href="@{/posts/{id}(id = ${post.id})}" th:text="${post.title}" />
             </li>
         </ol>

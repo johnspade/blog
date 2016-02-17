@@ -1,35 +1,32 @@
 package ru.johnspade.dao;
 
-import org.hibernate.annotations.OrderBy;
-
 import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "categories")
+@Table(name = "tags")
 @SuppressWarnings("unused")
-public class Category {
+public class Tag {
 
 	@Id
-	@Column(name = "category_name", nullable = false)
+	@Column(name = "tag_name", nullable = false)
 	private String name;
 	@Column(columnDefinition = "text")
 	private String description;
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "category")
-	@OrderBy(clause = "date")
+	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "tags")
 	private List<Post> posts;
 
-	public Category(String name) {
+	public Tag(String name) {
 		setName(name);
 	}
 
-	public Category() {
+	public Tag() {
 		this("");
 	}
 

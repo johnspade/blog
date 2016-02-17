@@ -3,13 +3,20 @@ package ru.johnspade.repository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-import ru.johnspade.dao.Category;
 import ru.johnspade.dao.Post;
+import ru.johnspade.dao.Tag;
+
+import java.util.List;
 
 @Repository
 public interface PostRepository extends JpaRepository<Post, Integer> {
 
-	Page<Post> findAllByCategory(Category category, Pageable pageable);
+	@Query("select p from Post p join p.tags t where t = ?1")
+	Page<Post> findAllByTag(Tag tag, Pageable pageable);
+
+	@Query("select p from Post p where p.date = (select max(pp.date) from Post pp)")
+	List<Post> findMostRecent();
 
 }

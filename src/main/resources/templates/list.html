@@ -6,15 +6,26 @@
 </head>
 <body>
 <div layout:fragment="content">
+    <div class="alert alert-warning" th:if="${!#strings.isEmpty(selectedTag)}">
+        <span th:text="'Ярлык: ' + ${selectedTag.name}" />
+    </div>
     <div th:each="post : ${posts}" class="list-element" th:with="url = @{/posts/{id}(id = ${post.id})}">
         <p th:text="${#dates.format(post.date, 'dd.MM.yyyy')}" class="post-date" />
         <a th:href="${url}"><h3 th:text="${post.title}" /></a>
         <div th:utext="${post.body}" />
-        <p class="comments-link"><a class="label label-default" th:href="${url} + '#disqus_thread'"></a></p>
+        <p class="post-footer">
+            Опубликовано <i><span th:text="${#dates.format(post.date, 'dd.MM.yyyy')}" /></i>
+            <span th:if="${!#strings.isEmpty(post.tags)}">с ярлыками:
+                <a class="label label-primary" th:each="tag : ${#strings.arraySplit(post.tags, ',')}"
+                   th:href="@{/posts(tag = ${tag})}" th:text="${tag}" />
+            </span>
+            <br />
+            <a th:href="${url} + '#disqus_thread'" />
+        </p>
     </div>
     <nav>
         <ul class="pager"
-            th:with="url = '/posts' + (*{selectedCategory != null} ? '?category=' + ${selectedCategory.name} : '')">
+            th:with="url = '/posts' + (*{selectedTag != null} ? '?tag=' + ${selectedTag.name} : '')">
             <li th:if="${hasPreviousPage} == true">
                 <a th:href="@{${url}(page = ${currentPage} - 1)}">Позже</a>
             </li>

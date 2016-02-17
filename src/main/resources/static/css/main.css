@@ -14,19 +14,15 @@
     margin: 30px 0;
 }
 
-#post-footer {
-    margin-top: 50px;
+.post-footer {
+    margin-top: 30px;
     background-color: #F2F1F1;
-    font-size: 80%;
+    font-size: 90%;
     padding: 5px 10px;
 }
 
 #disqus_thread {
     margin-top: 50px;
-}
-
-.comments-link {
-    margin-top: 30px;
 }
 
 #post-body-textarea {

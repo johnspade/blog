@@ -12,20 +12,20 @@ import org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect;
 @SpringBootApplication
 public class BlogApplication extends SpringBootServletInitializer {
 
-    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+	public static void main(String[] args) {
+		SpringApplication.run(BlogApplication.class, args);
+	}
+
+	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
 		return application.sources(BlogApplication.class);
 	}
 
-    public static void main(String[] args) {
-        SpringApplication.run(BlogApplication.class, args);
-    }
-
-    @Bean
-    public TemplateEngine templateEngine() {
-        TemplateEngine templateEngine = new TemplateEngine();
-        templateEngine.addDialect(new LayoutDialect());
+	@Bean
+	public TemplateEngine templateEngine() {
+		TemplateEngine templateEngine = new TemplateEngine();
+		templateEngine.addDialect(new LayoutDialect());
 		templateEngine.addDialect(new SpringSecurityDialect());
-        return templateEngine;
-    }
+		return templateEngine;
+	}
 
 }

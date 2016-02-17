@@ -1,10 +1,10 @@
 package ru.johnspade.web;
 
+import com.rometools.utils.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,21 +16,25 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
-import ru.johnspade.dao.Category;
 import ru.johnspade.dao.Post;
-import ru.johnspade.repository.CategoryRepository;
-import ru.johnspade.repository.PostRepository;
+import ru.johnspade.dao.Tag;
+import ru.johnspade.repository.TagRepository;
+import ru.johnspade.service.PostService;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 @Controller
 public class MainController {
 
-	private final static int PAGE_SIZE = 4;
 	@Autowired
-	private PostRepository postRepository;
+	Rss rss;
 	@Autowired
-	private CategoryRepository categoryRepository;
+	private PostService postService;
+	@Autowired
+	private TagRepository tagRepository;
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String login() {
@@ -44,25 +48,27 @@ public class MainController {
 
 	@RequestMapping(value = "/posts", method = RequestMethod.GET)
 	public ModelAndView posts(@RequestParam(value = "page", required = false) Integer pageNumber,
-							  @RequestParam(value = "category", required = false) String categoryName) {
-		Category category = null;
+							  @RequestParam(value = "tag", required = false) String tagName) {
+		Tag tag = null;
 		Page<Post> page;
 		ModelAndView modelAndView = new ModelAndView("list");
 		if (pageNumber == null)
 			pageNumber = 1;
-		PageRequest pageRequest = new PageRequest(pageNumber - 1, PAGE_SIZE, Sort.Direction.DESC, "date");
-		if (categoryName != null) {
-			if (categoryRepository.exists(categoryName)) {
-				category = categoryRepository.getOne(categoryName);
-				page = postRepository.findAllByCategory(category, pageRequest);
+		if (tagName != null) {
+			if (tagRepository.exists(tagName)) {
+				tag = tagRepository.getOne(tagName);
+				page = postService.findAllByTag(tag, pageNumber - 1);
 			}
 			else
 				page = new PageImpl<>(Collections.<Post>emptyList());
 		}
 		else
-			page = postRepository.findAll(pageRequest);
-		modelAndView.addObject("selectedCategory", category);
-		modelAndView.addObject("posts", page);
+			page = postService.findAll(pageNumber - 1);
+		List<PostModel> resources = new ArrayList<>();
+		for (Post post : page.getContent())
+			resources.add(new PostModel(post));
+		modelAndView.addObject("selectedTag", tag);
+		modelAndView.addObject("posts", resources);
 		modelAndView.addObject("currentPage", page.getNumber() + 1);
 		modelAndView.addObject("hasNextPage", page.hasNext());
 		modelAndView.addObject("hasPreviousPage", page.hasPrevious());
@@ -71,25 +77,23 @@ public class MainController {
 
 	@RequestMapping(value = "/new", method = RequestMethod.GET)
 	public String create(Model model) {
-		model.addAttribute("post", new Post());
+		model.addAttribute("post", new PostModel());
 		return "edit";
 	}
 
 	@RequestMapping(value = "/save", method = RequestMethod.POST, params = "action=save")
-	public String save(@ModelAttribute("post") Post editedPost) {
-		int id = editedPost.getId();
-		Post post = postRepository.exists(id) ? postRepository.getOne(id) : new Post();
-		post.setTitle(editedPost.getTitle());
-		post.setBody(editedPost.getBody());
-		post.setCategory(editedPost.getCategory());
-		post = postRepository.save(post);
+	public String save(@ModelAttribute("post") PostModel resource) {
+		int id = resource.getId();
+		Post post = postService.exists(id) ? postService.get(id) : new Post();
+		update(post, resource);
+		post = postService.save(post);
 		return "redirect:/posts/" + Integer.toString(post.getId());
 	}
 
 	@RequestMapping(value = "/posts/{id}", method = RequestMethod.GET)
 	public String read(@PathVariable int id, Model model) {
-		if (postRepository.exists(id))
-			model.addAttribute("post", postRepository.getOne(id));
+		if (postService.exists(id))
+			model.addAttribute("post", new PostModel(postService.get(id)));
 		else
 			throw new ResourceNotFoundException("Пост не найден");
 		return "post";
@@ -97,14 +101,16 @@ public class MainController {
 
 	@RequestMapping(value = "/posts/{id}/edit", method = RequestMethod.GET)
 	public String update(@PathVariable int id, Model model) {
-		Post post = postRepository.getOne(id);
-		model.addAttribute("post", post);
+		if (postService.exists(id))
+			model.addAttribute("post", new PostModel(postService.get(id)));
+		else
+			throw new ResourceNotFoundException("Пост не найден");
 		return "edit";
 	}
 
 	@RequestMapping(value = "/posts/{id}/delete", method = RequestMethod.DELETE)
 	public String delete(@PathVariable int id) {
-		postRepository.delete(postRepository.getOne(id));
+		postService.delete(postService.get(id));
 		return "redirect:/";
 	}
 
@@ -114,23 +120,64 @@ public class MainController {
 	}
 
 	@RequestMapping(value = "/save", method = RequestMethod.POST, params = "action=preview")
-	public String preview(@ModelAttribute("post") Post editedPost, Model model) {
-		model.addAttribute(editedPost);
+	public String preview(@ModelAttribute("post") PostModel resource, Model model) {
+		model.addAttribute("post", resource);
 		return "post";
+	}
+
+	@RequestMapping(value = "/rss", method = RequestMethod.GET)
+	public Rss rss() {
+		return rss;
+	}
+
+	private Post update(Post post, PostModel resource) {
+		post.setTitle(resource.getTitle());
+		post.setBody(resource.getBody());
+		String[] tagsArray = resource.getTags().split(",");
+		List<Tag> postTags = post.getTags();
+		postTags.clear();
+		for (String tag : tagsArray) {
+			String tagName = tag.trim();
+			if (Strings.isNotEmpty(tagName) && !tagRepository.exists(tagName))
+				tagRepository.save(new Tag(tagName));
+			if (tagRepository.exists(tagName))
+				postTags.add(tagRepository.getOne(tagName));
+		}
+		return post;
 	}
 
 }
 
 @ControllerAdvice
-class CategoriesAdvice {
+class CommonAttributesAdvice {
 
 	@Autowired
-	private CategoryRepository categoryRepository;
+	private TagRepository tagRepository;
+	@Value("${application.title}")
+	private String title;
+	@Value("${application.description}")
+	private String description;
 
-	@ModelAttribute
-	public String categories(Model model) {
-		model.addAttribute("categories", categoryRepository.findAll());
-		return "categories";
+	@ModelAttribute("title")
+	public String title() {
+		return title;
+	}
+
+	@ModelAttribute("description")
+	public String description() {
+		return description;
+	}
+
+	@ModelAttribute("tags")
+	public List<Tag> tags() {
+		List<Tag> tags = tagRepository.findAll();
+		Collections.sort(tags, new Comparator<Tag>() {
+			@Override
+			public int compare(Tag o1, Tag o2) {
+				return ((Integer) o2.getPosts().size()).compareTo(o1.getPosts().size());
+			}
+		});
+		return tags;
 	}
 
 }
