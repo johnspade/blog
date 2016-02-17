@@ -5,6 +5,6 @@ spring:
   datasource:
     platform: postgres
 application:
-  url: http://blog-johnspade.rhcloud.com
+  url: http://blog.johnspade.ru
   title: Записки Джона
   description: "Блог студента-программиста: мысли о жизни, дневниковые записи и заметки о программировании"

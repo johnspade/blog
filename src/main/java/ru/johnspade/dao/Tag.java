@@ -1,5 +1,6 @@
 package ru.johnspade.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -39,6 +40,8 @@ public class Tag {
 	}
 
 	public List<Post> getPosts() {
+		if (posts == null)
+			posts = new ArrayList<>();
 		return posts;
 	}
 
