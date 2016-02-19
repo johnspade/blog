@@ -1,7 +1,6 @@
 spring:
   jpa:
     database: POSTGRESQL
-    hibernate.ddl-auto: none
   datasource:
     platform: postgres
 application:

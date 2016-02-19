@@ -1,5 +1,6 @@
 package ru.johnspade.web;
 
+import com.google.common.base.Optional;
 import com.rometools.utils.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,8 +30,6 @@ import java.util.List;
 @Controller
 public class MainController {
 
-	@Autowired
-	Rss rss;
 	@Autowired
 	private PostService postService;
 	@Autowired
@@ -127,6 +126,10 @@ public class MainController {
 
 	@RequestMapping(value = "/rss", method = RequestMethod.GET)
 	public Rss rss() {
+		Rss rss = null;
+		Optional<Post> lastPost = postService.findMostRecent();
+		if (lastPost.isPresent())
+			rss = postService.getRss();
 		return rss;
 	}
 
@@ -153,6 +156,8 @@ class CommonAttributesAdvice {
 
 	@Autowired
 	private TagRepository tagRepository;
+	@Autowired
+	private PostService postService;
 	@Value("${application.title}")
 	private String title;
 	@Value("${application.description}")
@@ -178,6 +183,15 @@ class CommonAttributesAdvice {
 			}
 		});
 		return tags;
+	}
+
+	@ModelAttribute("tree")
+	public List<Tree> tree() {
+		List<Tree> tree = null;
+		Optional<Post> lastPost = postService.findMostRecent();
+		if (lastPost.isPresent())
+			tree = postService.getTree();
+		return tree;
 	}
 
 }

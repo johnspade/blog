@@ -1,13 +1,17 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title layout:title-pattern="$CONTENT_TITLE – $DECORATOR_TITLE" th:text="${title}" />
+    <link rel="alternate" type="application/rss+xml" th:title="${title} + ' – RSS'" href="/rss" />
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
     <link rel="stylesheet" th:href="@{/css/main.css}" />
-    <title layout:title-pattern="$CONTENT_TITLE – $DECORATOR_TITLE" th:text="${title}" />
-    <script type="text/javascript" src="//vk.com/js/api/openapi.js?121"></script>
+    <link rel="stylesheet" th:href="@{/css/bootstrap-treeview.css}" />
+    <link rel="stylesheet" th:href="@{/css/syntaxhighlighter/shCore.css}" />
+    <link rel="stylesheet" th:href="@{/css/syntaxhighlighter/shThemeDefault.css}" />
+    <script type="text/javascript" src="//vk.com/js/api/openapi.js?121" />
 </head>
 <body>
 <nav class="navbar navbar-default">
@@ -57,6 +61,10 @@
                 </span>
             </div>
             <div class="sidebar-widget">
+                <h4>Архив блога</h4>
+                <div id="tree" />
+            </div>
+            <div class="sidebar-widget">
                 <h4>ВКонтакте</h4>
                 <div id="vk_groups"></div>
                 <script type="text/javascript">
@@ -72,7 +80,7 @@
             </div>
             <div class="sidebar-widget">
                 <p class="text-center text-muted small">
-                    © <a href="http://about.johnspade.ru">johnspade</a>, 2016—
+                    © <a href="http://about.johnspade.ru">johnspade</a>, 2010—
                     <span th:text="${#dates.year(#dates.createNow())}" /> |
                     <a href="https://github.com/johnspade/blog">Исходный код на GitHub</a>
                 </p>
@@ -81,8 +89,23 @@
     </div>
 </div>
 
-<script th:src="@{/js/jquery-1.11.3.min.js}"></script>
-<script th:src="@{/js/bootstrap.min.js}"></script>
-<script id="dsq-count-scr" src="//johnspade.disqus.com/count.js" async="async"></script>
+<script th:src="@{/js/jquery-1.11.3.min.js}" />
+<script th:src="@{/js/bootstrap.min.js}" />
+<script th:src="@{/js/bootstrap-treeview.js}" />
+<script th:src="@{/js/syntaxhighlighter/shCore.js}" />
+<script th:src="@{/js/syntaxhighlighter/shBrushCpp.js}" />
+<script th:src="@{/js/syntaxhighlighter/shBrushJScript.js}" />
+<script th:src="@{/js/syntaxhighlighter/shBrushXml.js}" />
+<script th:src="@{/js/syntaxhighlighter/shBrushCss.js}" />
+<script th:src="@{/js/syntaxhighlighter/shBrushPowerShell.js}" />
+<script th:src="@{/js/syntaxhighlighter/shBrushPlain.js}" />
+<script id="dsq-count-scr" src="//johnspade.disqus.com/count.js" async="async" />
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var data = /*[[${tree}]]*/ null;
+    $('#tree').treeview({data: data, enableLinks: true, showBorder: false, showIcon: false, showTags: true});
+    /*]]>*/
+</script>
+<script>SyntaxHighlighter.all()</script>
 </body>
 </html>

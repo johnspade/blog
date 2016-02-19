@@ -1,5 +1,6 @@
 package ru.johnspade.web;
 
+import com.google.common.base.Optional;
 import com.rometools.rome.feed.atom.Content;
 import com.rometools.rome.feed.rss.Channel;
 import com.rometools.rome.feed.rss.Description;
@@ -37,7 +38,9 @@ public class Rss extends AbstractRssFeedView {
 		channel.setLink(baseUrl + "/rss");
 		channel.setTitle(title);
 		channel.setDescription(description);
-		channel.setPubDate(postService.findMostRecent().getDate());
+		Optional<Post> lastPost = postService.findMostRecent();
+		if (lastPost.isPresent())
+			channel.setPubDate(lastPost.get().getDate());
 		return channel;
 	}
 
