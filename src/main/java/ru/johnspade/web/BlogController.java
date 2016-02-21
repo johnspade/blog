@@ -1,6 +1,5 @@
 package ru.johnspade.web;
 
-import com.google.common.base.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -72,11 +71,7 @@ public class BlogController {
 
 	@RequestMapping(value = "/rss", method = RequestMethod.GET)
 	public Rss rss() {
-		Rss rss = null;
-		Optional<Post> lastPost = postService.findMostRecent();
-		if (lastPost.isPresent())
-			rss = postService.getRss();
-		return rss;
+		return postService.getRss();
 	}
 
 }
