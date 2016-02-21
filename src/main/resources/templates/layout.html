@@ -52,9 +52,10 @@
                 <h4>О блоге</h4>
                 <p class="well" th:text="${description}" />
             </div>
-            <div class="sidebar-widget" th:if="${!#lists.isEmpty(tags)}" th:with="coef = ${80.0 / tags[0].posts.size()}">
+            <div class="sidebar-widget" th:if="${!#lists.isEmpty(tags)}"
+                 th:with="coef = ${80.0 / tags[0].posts.size()}">
                 <h4>Ярлыки</h4>
-                <span th:each="tag : ${tags}" th:if="${tag.posts.size() != 0}"
+                <span th:each="tag : ${tags}" th:if="${!#lists.isEmpty(tag.posts)}"
                       th:style="'font-size: ' + ${#numbers.formatDecimal(80 + tag.posts.size() * coef, 0, 0)} + '%;'">
                     <a th:href="@{/posts(tag = ${tag.name})}"><span th:text="${tag.name}" /></a>&nbsp;
                     <span th:text="|(${tag.posts.size()}) |" />
@@ -107,5 +108,22 @@
     /*]]>*/
 </script>
 <script>SyntaxHighlighter.all()</script>
+<script>
+    (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        i[r] = i[r] || function () {
+                    (i[r].q = i[r].q || []).push(arguments)
+                }, i[r].l = 1 * new Date();
+        a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+    ga('create', 'UA-18212174-5', 'auto');
+    ga('send', 'pageview');
+
+</script>
 </body>
 </html>
