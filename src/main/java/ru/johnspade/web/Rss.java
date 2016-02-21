@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.view.feed.AbstractRssFeedView;
 import ru.johnspade.dao.Post;
+import ru.johnspade.service.CacheService;
 import ru.johnspade.service.PostService;
 
 import java.util.ArrayList;
@@ -25,6 +26,8 @@ public class Rss extends AbstractRssFeedView {
 
 	@Autowired
 	PostService postService;
+	@Autowired
+	CacheService cacheService;
 	@Value("${application.url}")
 	private String baseUrl;
 	@Value("${application.title}")

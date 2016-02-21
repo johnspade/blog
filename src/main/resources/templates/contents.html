@@ -6,7 +6,7 @@
 </head>
 <body>
 <div layout:fragment="content">
-    <div th:each="tag : ${tags}" th:if="${tag.posts.size() != 0}">
+    <div th:each="tag : ${tags}" th:if="${!#lists.isEmpty(tag.posts)}">
         <a th:href="@{/posts(tag = ${tag.name})}"><h3 th:text="${tag.name}" /></a>
         <ol>
             <li th:each="post : ${tag.posts}">

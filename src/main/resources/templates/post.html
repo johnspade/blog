@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" layout:decorator="layout">
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4" layout:decorator="layout">
 <head>
     <title th:text="${post.title}" />
 </head>
 <body>
 <div layout:fragment="content">
     <div class="page-header">
-        <h3 th:text="${post.title}">название</h3>
+        <h3 th:text="${post.title}" />
     </div>
     <div th:utext="${post.body}" />
     <p class="post-footer">

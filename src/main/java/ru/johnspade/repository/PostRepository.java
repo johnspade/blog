@@ -16,7 +16,4 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
 	@Query("select p from Post p join p.tags t where t = ?1")
 	Page<Post> findAllByTag(Tag tag, Pageable pageable);
 
-	@Query("select p from Post p where p.date = (select max(pp.date) from Post pp)")
-	List<Post> findMostRecent();
-
 }

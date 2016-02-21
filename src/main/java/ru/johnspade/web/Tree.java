@@ -30,10 +30,12 @@ public class Tree {
 		return nodes;
 	}
 
+	@SuppressWarnings("unused")
 	public NodeState getState() {
 		return state;
 	}
 
+	@SuppressWarnings("unused")
 	public boolean isSelectable() {
 		return false;
 	}

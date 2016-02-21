@@ -2,6 +2,7 @@ package ru.johnspade.service;
 
 import com.google.common.base.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -27,34 +29,42 @@ public class PostService {
 	private final static String SORT_PROPERTY = "date";
 	private final static Locale LOCALE = Locale.forLanguageTag("ru");
 	@Autowired
+	private CacheService cacheService;
+	@Autowired
 	PostRepository repository;
 	@Autowired
 	private Rss rss;
 
+	@Cacheable(cacheNames = "postExists", keyGenerator = "cacheKeyGenerator")
 	public boolean exists(int id) {
 		return repository.exists(id);
 	}
 
+	@Cacheable(cacheNames = "post", keyGenerator = "cacheKeyGenerator")
 	public Post get(int id) {
 		return repository.getOne(id);
 	}
 
 	public Post save(Post post) {
+		cacheService.setlastSaveTimestamp(new Date());
 		return repository.save(post);
 	}
 
 	public void delete(Post post) {
+		cacheService.setlastSaveTimestamp(new Date());
 		repository.delete(post);
 	}
 
+	@Cacheable(cacheNames = "mostRecentPost", keyGenerator = "cacheKeyGenerator")
 	public Optional<Post> findMostRecent() {
 		Post post = null;
-		List<Post> result = repository.findMostRecent();
-		if (!result.isEmpty())
-			post = result.get(0);
+		Page<Post> result = repository.findAll(new PageRequest(0, 1, Sort.Direction.DESC, SORT_PROPERTY));
+		if (result.getNumberOfElements() > 0)
+			post = result.getContent().get(0);
 		return Optional.fromNullable(post);
 	}
 
+	@Cacheable(cacheNames = "posts", keyGenerator = "cacheKeyGenerator")
 	public List<Post> findAll() {
 		List<Post> posts = repository.findAll();
 		Collections.sort(posts, new Comparator<Post>() {
@@ -66,6 +76,7 @@ public class PostService {
 		return posts;
 	}
 
+	@Cacheable(cacheNames = "postsPage", keyGenerator = "cacheKeyGenerator")
 	public Page<Post> findAll(int pageNumber) {
 		return repository.findAll(new PageRequest(pageNumber, PAGE_SIZE, Sort.Direction.DESC, SORT_PROPERTY));
 	}
@@ -78,10 +89,12 @@ public class PostService {
 		return repository.findAll(new PageRequest(0, 25, Sort.Direction.DESC, SORT_PROPERTY));
 	}
 
+	@Cacheable(cacheNames = "rss", keyGenerator = "cacheKeyGenerator")
 	public Rss getRss() {
 		return rss;
 	}
 
+	@Cacheable(cacheNames = "tree", keyGenerator = "cacheKeyGenerator")
 	public List<Tree> getTree() {
 		List<Tree> years = new ArrayList<>();
 		List<Post> posts = findAll();

@@ -9,7 +9,7 @@
 </head>
 <body>
 <div class="container service-page">
-    <div class="row" style="margin-top: 30px">
+    <div class="row" id="login-form">
         <div class="col-md-4 col-md-offset-4">
             <p th:if="${param.error}" class="text-danger">Неправильное имя пользователя или пароль.</p>
             <p th:if="${param.logout}" class="text-success">Вы вышли из аккаунта.</p>
