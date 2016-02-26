@@ -1,5 +1,8 @@
 package ru.johnspade.web;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 import ru.johnspade.dao.Post;
 import ru.johnspade.dao.Tag;
 
@@ -14,11 +17,18 @@ public class PostModel {
 	private String body;
 	private String tags;
 
-	public PostModel(Post post) {
+	public PostModel(Post post, boolean isShort) {
 		setId(post.getId());
 		setTitle(post.getTitle());
 		setDate(post.getDate());
-		setBody(post.getBody());
+		String body = post.getBody();
+		if (isShort) {
+			Document doc = Jsoup.parse(body);
+			Elements cuts = doc.select("body > a[name=more]");
+			if (!cuts.isEmpty())
+				body = doc.body().html().split(cuts.first().toString())[0];
+		}
+		setBody(body);
 		List<Tag> postTags = post.getTags();
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < postTags.size(); i++) {
@@ -27,6 +37,10 @@ public class PostModel {
 				sb.append(",");
 		}
 		setTags(sb.toString());
+	}
+
+	public PostModel(Post post) {
+		this(post, false);
 	}
 
 	public PostModel() {

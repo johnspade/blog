@@ -13,6 +13,7 @@
         <p th:text="${#dates.format(post.date, 'dd.MM.yyyy')}" class="post-date" />
         <a th:href="${url}"><h3 th:text="${post.title}" /></a>
         <div th:utext="${post.body}" />
+        <a th:href="${url}" class="cut-link">Читать полностью »</a>
         <p class="post-footer">Опубликовано <i><span th:text="${#dates.format(post.date, 'dd.MM.yyyy')}" /></i>
             <span th:if="${!#strings.isEmpty(post.tags)}">с ярлыками:
                 <a class="label label-primary" th:each="tag : ${#strings.arraySplit(post.tags, ',')}"

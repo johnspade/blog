@@ -36,3 +36,8 @@
 #login-form {
     margin-top: 30px;
 }
+
+.cut-link {
+    display: inline-block;
+    margin-top: 20px;
+}

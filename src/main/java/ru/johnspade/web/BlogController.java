@@ -55,7 +55,7 @@ public class BlogController {
 			page = postService.findAll(pageNumber - 1);
 		List<PostModel> resources = new ArrayList<>();
 		for (Post post : page.getContent())
-			resources.add(new PostModel(post));
+			resources.add(new PostModel(post, true));
 		modelAndView.addObject("selectedTag", tag);
 		modelAndView.addObject("posts", resources);
 		modelAndView.addObject("currentPage", page.getNumber() + 1);
