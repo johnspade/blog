@@ -12,6 +12,8 @@
     <link rel="stylesheet" th:href="@{/css/syntaxhighlighter/shCore.css}" />
     <link rel="stylesheet" th:href="@{/css/syntaxhighlighter/shThemeDefault.css}" />
     <script type="text/javascript" src="//vk.com/js/api/openapi.js?121" />
+    <script type='text/javascript' src='//dsms0mj1bbhn4.cloudfront.net/assets/pub/shareaholic.js'
+            data-shr-siteid='e1666b729ce1e4dee2bfb66a8cd3566f' data-cfasync='false' async='async'></script>
 </head>
 <body>
 <nav class="navbar navbar-default">
@@ -51,6 +53,24 @@
             <div class="sidebar-widget">
                 <h4>О блоге</h4>
                 <p class="well" th:text="${description}" />
+            </div>
+            <div class="sidebar-widget">
+                <h4>Поиск</h4>
+                <div>
+                    <script>
+                        (function() {
+                            var cx = '007229779708987135604:bz-hwov_yu8';
+                            var gcse = document.createElement('script');
+                            gcse.type = 'text/javascript';
+                            gcse.async = true;
+                            gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+                                    '//cse.google.com/cse.js?cx=' + cx;
+                            var s = document.getElementsByTagName('script')[0];
+                            s.parentNode.insertBefore(gcse, s);
+                        })();
+                    </script>
+                    <gcse:search></gcse:search>
+                </div>
             </div>
             <div class="sidebar-widget" th:if="${!#lists.isEmpty(tags)}"
                  th:with="coef = ${80.0 / tags[0].posts.size()}">

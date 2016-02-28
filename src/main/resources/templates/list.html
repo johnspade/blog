@@ -2,7 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorator="layout">
 <head>
-    <title>Посты</title>
+    <meta th:if="${#httpServletRequest.getRequestURI() != '/'}" content="noindex, follow" name="robots"/>
+    <title th:text="${selectedTag != null ? selectedTag.name : 'Посты'}" />
 </head>
 <body>
 <div layout:fragment="content">
@@ -13,7 +14,7 @@
         <p th:text="${#dates.format(post.date, 'dd.MM.yyyy')}" class="post-date" />
         <a th:href="${url}"><h3 th:text="${post.title}" /></a>
         <div th:utext="${post.body}" />
-        <a th:href="${url}" class="cut-link">Читать полностью »</a>
+        <a th:href="${url} + '#more'" class="cut-link">Читать полностью »</a>
         <p class="post-footer">Опубликовано <i><span th:text="${#dates.format(post.date, 'dd.MM.yyyy')}" /></i>
             <span th:if="${!#strings.isEmpty(post.tags)}">с ярлыками:
                 <a class="label label-primary" th:each="tag : ${#strings.arraySplit(post.tags, ',')}"
