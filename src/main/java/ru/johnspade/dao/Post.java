@@ -31,6 +31,9 @@ public class Post {
 	@Column(nullable = false, columnDefinition = "text")
 	private String body;
 
+	@Column
+	private String description;
+
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "tag_post", joinColumns = @JoinColumn(name = "post_id"),
 			inverseJoinColumns = @JoinColumn(name = "tag_name"))
@@ -83,6 +86,14 @@ public class Post {
 		if (tags == null)
 			tags = new ArrayList<>();
 		return tags;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 }

@@ -16,6 +16,7 @@ public class PostModel {
 	private Date date;
 	private String body;
 	private String tags;
+	private String description;
 
 	public PostModel(Post post, boolean isShort) {
 		setId(post.getId());
@@ -37,6 +38,7 @@ public class PostModel {
 				sb.append(",");
 		}
 		setTags(sb.toString());
+		setDescription(post.getDescription());
 	}
 
 	public PostModel(Post post) {
@@ -49,6 +51,7 @@ public class PostModel {
 		setDate(new Date());
 		setBody("");
 		setTags("");
+		setDescription("");
 	}
 
 	public int getId() {
@@ -89,6 +92,14 @@ public class PostModel {
 
 	public void setTags(String tags) {
 		this.tags = tags;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 }

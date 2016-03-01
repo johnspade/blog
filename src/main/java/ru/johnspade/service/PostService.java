@@ -73,7 +73,7 @@ public class PostService {
 				return o2.getDate().compareTo(o1.getDate());
 			}
 		});
-		return posts;
+		return Collections.unmodifiableList(posts);
 	}
 
 	@Cacheable(cacheNames = "postsPage", keyGenerator = "cacheKeyGenerator")

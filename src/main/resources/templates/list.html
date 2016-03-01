@@ -3,6 +3,7 @@
       layout:decorator="layout">
 <head>
     <meta th:if="${#httpServletRequest.getRequestURI() != '/'}" content="noindex, follow" name="robots" />
+    <meta th:content="${description}" name="description" />
     <title th:text="${selectedTag != null ? selectedTag.name : 'Посты'}" />
 </head>
 <body>

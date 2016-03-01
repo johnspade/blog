@@ -8,8 +8,6 @@ import org.springframework.stereotype.Repository;
 import ru.johnspade.dao.Post;
 import ru.johnspade.dao.Tag;
 
-import java.util.List;
-
 @Repository
 public interface PostRepository extends JpaRepository<Post, Integer> {
 

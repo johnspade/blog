@@ -1,5 +1,7 @@
 package ru.johnspade.web.controller;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
 import com.rometools.utils.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -37,15 +39,18 @@ public class PostController {
 	@RequestMapping(value = "/posts/{id}", method = RequestMethod.GET)
 	public String read(@PathVariable int id, Model model) {
 		if (postService.exists(id)) {
-			Post post = postService.get(id);
-			List<Post> posts = new ArrayList<>();
-			for (Tag tag : post.getTags())
-				posts.addAll(tag.getPosts());
-			posts = postService.findAll();
-			posts.remove(post);
+			final Post post = postService.get(id);
+			List<Post> posts = new ArrayList<>(postService.findAll());
+			Iterables.removeIf(posts, new Predicate<Post>() {
+				@Override
+				public boolean apply(Post postObject) {
+					return post.getId() == postObject.getId();
+				}
+			});
 			List<Post> related = new ArrayList<>(RELATED_COUNT);
 			Random random = new Random();
-			for (int i = 0; i < RELATED_COUNT; i++) {
+			int count = RELATED_COUNT < posts.size() ? RELATED_COUNT : posts.size();
+			for (int i = 0; i < count; i++) {
 				int n = random.nextInt(posts.size());
 				related.add(posts.get(n));
 				posts.remove(n);
@@ -104,6 +109,7 @@ public class PostController {
 					postTags.add(foundTag);
 			}
 		}
+		post.setDescription(resource.getDescription());
 		return post;
 	}
 

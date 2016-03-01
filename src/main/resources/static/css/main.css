@@ -15,10 +15,11 @@
 }
 
 .post-footer {
-    margin-top: 20px;
+    margin-top: 10px;
     background-color: #F2F1F1;
     font-size: 90%;
     padding: 5px 10px;
+    clear: both;
 }
 
 #disqus_thread {
@@ -56,8 +57,8 @@
     padding: 10px;
     display: block;
     float: left;
-    height: 200px;
     overflow: hidden;
+    height: 200px;
 }
 
 .related-link:hover {
