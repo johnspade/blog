@@ -28,11 +28,11 @@ public class Rss extends AbstractRssFeedView {
 	PostService postService;
 	@Autowired
 	CacheService cacheService;
-	@Value("${application.url}")
+	@Value("${blog.url}")
 	private String baseUrl;
-	@Value("${application.title}")
+	@Value("${blog.title}")
 	private String title;
-	@Value("${application.description}")
+	@Value("${blog.description}")
 	private String description;
 
 	@Override

@@ -15,7 +15,7 @@
 }
 
 .post-footer {
-    margin-top: 30px;
+    margin-top: 20px;
     background-color: #F2F1F1;
     font-size: 90%;
     padding: 5px 10px;
@@ -42,6 +42,38 @@
     margin-top: 20px;
 }
 
-.shareaholic-canvas {
+.related {
     margin-top: 30px;
+    height: 250px;
+}
+
+.related-text {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.related-link {
+    padding: 10px;
+    display: block;
+    float: left;
+    height: 200px;
+    overflow: hidden;
+}
+
+.related-link:hover {
+    background-color: #f2f1f1;
+    text-decoration: none;
+}
+
+.related-image {
+    width: 100px;
+    height: 100px;
+    background: #f2f1f1 center no-repeat;
+    background-size: cover;
+}
+
+.related-title {
+    width: 100px;
+    font-size: smaller;
+    margin-top: 10px;
 }

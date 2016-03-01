@@ -1,4 +1,4 @@
-package ru.johnspade.web;
+package ru.johnspade.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -7,11 +7,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import ru.johnspade.dao.Post;
 import ru.johnspade.dao.Tag;
 import ru.johnspade.service.PostService;
 import ru.johnspade.service.TagService;
+import ru.johnspade.web.PostModel;
+import ru.johnspade.web.Rss;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -40,9 +43,11 @@ public class BlogController {
 							  @RequestParam(value = "tag", required = false) String tagName) {
 		Tag tag = null;
 		Page<Post> page;
-		ModelAndView modelAndView = new ModelAndView("list");
 		if (pageNumber == null)
 			pageNumber = 1;
+		if (pageNumber <= 0)
+			return new ModelAndView("redirect:/");
+		ModelAndView modelAndView = new ModelAndView("list");
 		if (tagName != null) {
 			if (tagService.exists(tagName)) {
 				tag = tagService.getOne(tagName);
@@ -72,6 +77,12 @@ public class BlogController {
 	@RequestMapping(value = "/rss", method = RequestMethod.GET)
 	public Rss rss() {
 		return postService.getRss();
+	}
+
+	@RequestMapping(value = "/robots.txt", method = RequestMethod.GET)
+	@ResponseBody
+	public String robots() {
+		return "User-agent: *\nDisallow:\nAllow: /posts/*\nDisallow: /posts\n";
 	}
 
 }

@@ -3,7 +3,7 @@ spring:
     database: POSTGRESQL
   datasource:
     platform: postgres
-application:
+blog:
   url: http://blog.johnspade.ru
   title: Записки Джона
   description: "Блог студента-программиста: мысли о жизни, дневниковые записи и заметки о программировании"

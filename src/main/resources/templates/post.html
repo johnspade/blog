@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4" layout:decorator="layout">
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4" xmlns:thmb="http://johnspade.ru"
+      layout:decorator="layout">
 <head>
     <title th:text="${post.title}" />
 </head>
@@ -10,6 +11,13 @@
         <h3 th:text="${post.title}" />
     </div>
     <div th:utext="${post.body}" />
+    <div class="related">
+        <div class="related-text">Прочитайте также:</div>
+        <a class="related-link" th:each="r : ${related}" th:href="@{/posts/{id}(id = ${r.id})}">
+            <div class="related-image" thmb:thumbnail="${r.body}" />
+            <div class="related-title" th:text="${r.title}" />
+        </a>
+    </div>
     <p class="post-footer">
         Опубликовано <i><span th:text="${#dates.format(post.date, 'dd.MM.yyyy')}" /></i>
         <span th:if="${!#strings.isEmpty(post.tags)}">
@@ -26,7 +34,6 @@
             </button>
         </form>
     </div>
-    <div class="shareaholic-canvas" data-app="recommendations" data-app-id="23892434" style="height: 300px"></div>
     <div>
         <div id="disqus_thread"></div>
         <script th:inline="javascript">

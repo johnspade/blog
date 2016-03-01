@@ -1,4 +1,4 @@
-package ru.johnspade.web;
+package ru.johnspade.web.controller;
 
 import com.rometools.utils.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,12 +12,17 @@ import ru.johnspade.dao.Post;
 import ru.johnspade.dao.Tag;
 import ru.johnspade.service.PostService;
 import ru.johnspade.service.TagService;
+import ru.johnspade.web.PostModel;
+import ru.johnspade.web.ResourceNotFoundException;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Controller
 public class PostController {
 
+	private static final int RELATED_COUNT = 3;
 	@Autowired
 	private PostService postService;
 	@Autowired
@@ -31,8 +36,23 @@ public class PostController {
 
 	@RequestMapping(value = "/posts/{id}", method = RequestMethod.GET)
 	public String read(@PathVariable int id, Model model) {
-		if (postService.exists(id))
-			model.addAttribute("post", new PostModel(postService.get(id)));
+		if (postService.exists(id)) {
+			Post post = postService.get(id);
+			List<Post> posts = new ArrayList<>();
+			for (Tag tag : post.getTags())
+				posts.addAll(tag.getPosts());
+			posts = postService.findAll();
+			posts.remove(post);
+			List<Post> related = new ArrayList<>(RELATED_COUNT);
+			Random random = new Random();
+			for (int i = 0; i < RELATED_COUNT; i++) {
+				int n = random.nextInt(posts.size());
+				related.add(posts.get(n));
+				posts.remove(n);
+			}
+			model.addAttribute("post", new PostModel(post));
+			model.addAttribute("related", related);
+		}
 		else
 			throw new ResourceNotFoundException("Пост не найден");
 		return "post";
@@ -78,8 +98,11 @@ public class PostController {
 			String tagName = tag.trim();
 			if (Strings.isNotEmpty(tagName) && !tagService.exists(tagName))
 				tagService.save(new Tag(tagName));
-			if (tagService.exists(tagName))
-				postTags.add(tagService.getOne(tagName));
+			if (tagService.exists(tagName)) {
+				Tag foundTag = tagService.getOne(tagName);
+				if (!postTags.contains(foundTag))
+					postTags.add(foundTag);
+			}
 		}
 		return post;
 	}
