@@ -15,9 +15,9 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+@SuppressWarnings("unused")
 @Entity
 @Table(name = "posts")
-@SuppressWarnings("unused")
 public class Post {
 
 	@Id
@@ -30,7 +30,6 @@ public class Post {
 	private Date date;
 	@Column(nullable = false, columnDefinition = "text")
 	private String body;
-
 	@Column
 	private String description;
 

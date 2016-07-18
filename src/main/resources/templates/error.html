@@ -8,11 +8,11 @@
 <div layout:fragment="content">
     <div class="alert alert-warning">
         <h3>
-            Код ошибки: <span th:text="${status}" />
+            Код ошибки: <span th:text="${status}" ></span>
         </h3>
-        <p th:text="${error}" />
+        <p th:text="${error}" ></p>
         <p th:if="${message != 'No message available'}">
-            <b>Сообщение:</b> <span th:text="${message}" />
+            <b>Сообщение:</b> <span th:text="${message}" ></span>
         </p>
     </div>
 </div>

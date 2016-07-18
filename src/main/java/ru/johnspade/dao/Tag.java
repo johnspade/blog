@@ -10,9 +10,9 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+@SuppressWarnings("unused")
 @Entity
 @Table(name = "tags")
-@SuppressWarnings("unused")
 public class Tag {
 
 	@Id

@@ -4,25 +4,25 @@
 <head>
     <meta th:if="${#httpServletRequest.getRequestURI() != '/'}" content="noindex, follow" name="robots" />
     <meta th:content="${description}" name="description" />
-    <title th:text="${selectedTag != null ? selectedTag.name : 'Посты'}" />
+    <title th:text="${selectedTag != null ? selectedTag.name : 'Посты'}" ></title>
 </head>
 <body>
 <div layout:fragment="content">
     <div class="alert alert-warning" th:if="${!#strings.isEmpty(selectedTag)}">
-        <span th:text="'Ярлык: ' + ${selectedTag.name}" />
+        <span th:text="'Ярлык: ' + ${selectedTag.name}" ></span>
     </div>
     <div th:each="post : ${posts}" class="list-element" th:with="url = @{/posts/{id}(id = ${post.id})}">
-        <p th:text="${#dates.format(post.date, 'dd.MM.yyyy')}" class="post-date" />
-        <a th:href="${url}"><h3 th:text="${post.title}" /></a>
-        <div th:utext="${post.body}" />
+        <p th:text="${#dates.format(post.date, 'dd.MM.yyyy')}" class="post-date" ></p>
+        <a th:href="${url}"><h3 th:text="${post.title}" ></h3></a>
+        <div th:utext="${post.body}" ></div>
         <a th:href="${url} + '#more'" class="cut-link">Читать полностью »</a>
-        <p class="post-footer">Опубликовано <i><span th:text="${#dates.format(post.date, 'dd.MM.yyyy')}" /></i>
+        <p class="post-footer">Опубликовано <i><span th:text="${#dates.format(post.date, 'dd.MM.yyyy')}" ></span></i>
             <span th:if="${!#strings.isEmpty(post.tags)}">с ярлыками:
                 <a class="label label-primary" th:each="tag : ${#strings.arraySplit(post.tags, ',')}"
-                   th:href="@{/posts(tag = ${tag})}" th:text="${tag}" />
+                   th:href="@{/posts(tag = ${tag})}" th:text="${tag}" ></a>
             </span>
             <br />
-            <a th:href="${url} + '#disqus_thread'" />
+            <a th:href="${url} + '#disqus_thread'" ></a>
         </p>
     </div>
     <nav>

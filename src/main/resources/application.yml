@@ -1,9 +1,9 @@
 spring:
   jpa:
     database: POSTGRESQL
+    hibernate:
+      ddl-auto: update
   datasource:
     platform: postgres
 blog:
   url: http://blog.johnspade.ru
-  title: Записки Джона
-  description: "Блог студента-программиста: мысли о жизни, дневниковые записи и заметки о программировании"

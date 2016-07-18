@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4" xmlns:gcse="http://www.google.com">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title layout:title-pattern="$CONTENT_TITLE – $DECORATOR_TITLE" th:text="${title}" />
+    <title layout:title-pattern="$CONTENT_TITLE – $DECORATOR_TITLE" th:text="${title}">Название</title>
     <link rel="alternate" type="application/rss+xml" th:title="${title} + ' – RSS'" href="/rss" />
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
     <link rel="stylesheet" th:href="@{/css/main.css}" />
     <link rel="stylesheet" th:href="@{/css/bootstrap-treeview.css}" />
     <link rel="stylesheet" th:href="@{/css/syntaxhighlighter/shCore.css}" />
     <link rel="stylesheet" th:href="@{/css/syntaxhighlighter/shThemeDefault.css}" />
-    <script type="text/javascript" src="//vk.com/js/api/openapi.js?121" />
+    <script type="text/javascript" src="//vk.com/js/api/openapi.js?121"></script>
 </head>
 <body>
 <nav class="navbar navbar-default">
@@ -19,13 +19,13 @@
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#nav-collapse-1">
                 <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar" />
-                <span class="icon-bar" />
-                <span class="icon-bar" />
+                <span class="icon-bar" ></span>
+                <span class="icon-bar" ></span>
+                <span class="icon-bar" ></span>
             </button>
-            <a class="navbar-brand" href="/" th:text="${title}" />
+            <a class="navbar-brand" href="/" th:text="${title}">Название блога</a>
         </div>
-        <p class="navbar-text">All work and no play makes John a dull boy</p>
+        <p class="navbar-text" th:text="${description}">Описание</p>
         <form action="/new" sec:authorize="hasRole('ROLE_ADMIN')" class="navbar-form navbar-left">
             <button type="submit" class="btn btn-default">Создать</button>
         </form>
@@ -45,12 +45,12 @@
 <div class="container">
     <div class="row">
         <div class="col-md-8">
-            <div layout:fragment="content" />
+            <div layout:fragment="content" ></div>
         </div>
         <div class="col-md-4">
             <div class="sidebar-widget">
                 <h4>О блоге</h4>
-                <p class="well" th:text="${description}" />
+                <p class="well" th:text="${about}" ></p>
             </div>
             <div>
                 <h4>Поиск</h4>
@@ -75,13 +75,13 @@
                 <h4>Ярлыки</h4>
                 <span th:each="tag : ${tags}" th:if="${!#lists.isEmpty(tag.posts)}"
                       th:style="'font-size: ' + ${#numbers.formatDecimal(80 + tag.posts.size() * coef, 0, 0)} + '%;'">
-                    <a th:href="@{/posts(tag = ${tag.name})}"><span th:text="${tag.name}" /></a>&nbsp;
-                    <span th:text="|(${tag.posts.size()}) |" />
+                    <a th:href="@{/posts(tag = ${tag.name})}"><span th:text="${tag.name}" ></span></a>&nbsp;
+                    <span th:text="|(${tag.posts.size()}) |" ></span>
                 </span>
             </div>
             <div class="sidebar-widget">
                 <h4>Архив блога</h4>
-                <div id="tree" />
+                <div id="tree" ></div>
             </div>
             <div class="sidebar-widget">
                 <h4>ВКонтакте</h4>
@@ -100,7 +100,7 @@
             <div class="sidebar-widget">
                 <p class="text-center text-muted small">
                     © <a href="http://about.johnspade.ru">johnspade</a>, 2010—
-                    <span th:text="${#dates.year(#dates.createNow())}" /> |
+                    <span th:text="${#dates.year(#dates.createNow())}" ></span> |
                     <a href="https://github.com/johnspade/blog">Исходный код на GitHub</a>
                 </p>
             </div>
@@ -108,19 +108,19 @@
     </div>
 </div>
 
-<script th:src="@{/js/jquery-1.11.3.min.js}" />
-<script th:src="@{/js/bootstrap.min.js}" />
-<script th:src="@{/js/bootstrap-treeview.js}" />
-<script th:src="@{/js/syntaxhighlighter/shCore.js}" />
-<script th:src="@{/js/syntaxhighlighter/shBrushCpp.js}" />
-<script th:src="@{/js/syntaxhighlighter/shBrushJScript.js}" />
-<script th:src="@{/js/syntaxhighlighter/shBrushXml.js}" />
-<script th:src="@{/js/syntaxhighlighter/shBrushCss.js}" />
-<script th:src="@{/js/syntaxhighlighter/shBrushPowerShell.js}" />
-<script th:src="@{/js/syntaxhighlighter/shBrushPlain.js}" />
-<script th:src="@{/js/syntaxhighlighter/shBrushCSharp.js}" />
-<script th:src="@{/js/syntaxhighlighter/shBrushJava.js}" />
-<script id="dsq-count-scr" src="//johnspade.disqus.com/count.js" async="async" />
+<script th:src="@{/js/jquery-1.11.3.min.js}" ></script>
+<script th:src="@{/js/bootstrap.min.js}" ></script>
+<script th:src="@{/js/bootstrap-treeview.js}" ></script>
+<script th:src="@{/js/syntaxhighlighter/shCore.js}" ></script>
+<script th:src="@{/js/syntaxhighlighter/shBrushCpp.js}" ></script>
+<script th:src="@{/js/syntaxhighlighter/shBrushJScript.js}" ></script>
+<script th:src="@{/js/syntaxhighlighter/shBrushXml.js}" ></script>
+<script th:src="@{/js/syntaxhighlighter/shBrushCss.js}" ></script>
+<script th:src="@{/js/syntaxhighlighter/shBrushPowerShell.js}" ></script>
+<script th:src="@{/js/syntaxhighlighter/shBrushPlain.js}" ></script>
+<script th:src="@{/js/syntaxhighlighter/shBrushCSharp.js}" ></script>
+<script th:src="@{/js/syntaxhighlighter/shBrushJava.js}" ></script>
+<script id="dsq-count-scr" src="//johnspade.disqus.com/count.js" async="async" ></script>
 <script th:inline="javascript">
     /*<![CDATA[*/
     var data = /*[[${tree}]]*/ null;
