@@ -8,6 +8,9 @@ import ru.johnspade.dao.SettingsService
 import ru.johnspade.service.PostService
 import ru.johnspade.service.TagService
 
+data class PostInfo(val id: Int, val title: String, val recent: Boolean)
+data class TagInfo(val name: String, val posts: List<PostInfo>)
+
 @ControllerAdvice
 class CommonAttributesAdvice {
 
@@ -24,8 +27,11 @@ class CommonAttributesAdvice {
 		model.addAttribute("title", settings.title)
 		model.addAttribute("description", settings.description)
 		model.addAttribute("about", settings.about)
-		model.addAttribute("tags", tagService.findAll())
 		model.addAttribute("tree", postService.tree)
+		val recentPosts = postService.findAll(0)
+		model.addAttribute("tags", tagService.findAll().map {
+			TagInfo(it.name, it.posts.map { p -> PostInfo(p.id, p.title, recentPosts.any { it.id == p.id }) })
+		})
 	}
 
 }

@@ -19,9 +19,9 @@
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#nav-collapse-1">
                 <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar" ></span>
-                <span class="icon-bar" ></span>
-                <span class="icon-bar" ></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand" href="/" th:text="${title}">Название блога</a>
         </div>
@@ -45,12 +45,12 @@
 <div class="container">
     <div class="row">
         <div class="col-md-8">
-            <div layout:fragment="content" ></div>
+            <div layout:fragment="content"></div>
         </div>
         <div class="col-md-4">
             <div class="sidebar-widget">
                 <h4>О блоге</h4>
-                <p class="well" th:text="${about}" ></p>
+                <p class="well" th:text="${about}"></p>
             </div>
             <div>
                 <h4>Поиск</h4>
@@ -75,13 +75,13 @@
                 <h4>Ярлыки</h4>
                 <span th:each="tag : ${tags}" th:if="${!#lists.isEmpty(tag.posts)}"
                       th:style="'font-size: ' + ${#numbers.formatDecimal(80 + tag.posts.size() * coef, 0, 0)} + '%;'">
-                    <a th:href="@{/posts(tag = ${tag.name})}"><span th:text="${tag.name}" ></span></a>&nbsp;
-                    <span th:text="|(${tag.posts.size()}) |" ></span>
+                    <a th:href="@{/posts(tag = ${tag.name})}"><span th:text="${tag.name}"></span></a>&nbsp;
+                    <span th:text="|(${tag.posts.size()}) |"></span>
                 </span>
             </div>
             <div class="sidebar-widget">
                 <h4>Архив блога</h4>
-                <div id="tree" ></div>
+                <div id="tree"></div>
             </div>
             <div class="sidebar-widget">
                 <h4>ВКонтакте</h4>
@@ -100,7 +100,7 @@
             <div class="sidebar-widget">
                 <p class="text-center text-muted small">
                     © <a href="http://about.johnspade.ru">johnspade</a>, 2010—
-                    <span th:text="${#dates.year(#dates.createNow())}" ></span> |
+                    <span th:text="${#dates.year(#dates.createNow())}"></span> |
                     <a href="https://github.com/johnspade/blog">Исходный код на GitHub</a>
                 </p>
             </div>
@@ -108,19 +108,19 @@
     </div>
 </div>
 
-<script th:src="@{/js/jquery-1.11.3.min.js}" ></script>
-<script th:src="@{/js/bootstrap.min.js}" ></script>
-<script th:src="@{/js/bootstrap-treeview.js}" ></script>
-<script th:src="@{/js/syntaxhighlighter/shCore.js}" ></script>
-<script th:src="@{/js/syntaxhighlighter/shBrushCpp.js}" ></script>
-<script th:src="@{/js/syntaxhighlighter/shBrushJScript.js}" ></script>
-<script th:src="@{/js/syntaxhighlighter/shBrushXml.js}" ></script>
-<script th:src="@{/js/syntaxhighlighter/shBrushCss.js}" ></script>
-<script th:src="@{/js/syntaxhighlighter/shBrushPowerShell.js}" ></script>
-<script th:src="@{/js/syntaxhighlighter/shBrushPlain.js}" ></script>
-<script th:src="@{/js/syntaxhighlighter/shBrushCSharp.js}" ></script>
-<script th:src="@{/js/syntaxhighlighter/shBrushJava.js}" ></script>
-<script id="dsq-count-scr" src="//johnspade.disqus.com/count.js" async="async" ></script>
+<script th:src="@{/js/jquery-1.11.3.min.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<script th:src="@{/js/bootstrap-treeview.js}"></script>
+<script th:src="@{/js/syntaxhighlighter/shCore.js}"></script>
+<script th:src="@{/js/syntaxhighlighter/shBrushCpp.js}"></script>
+<script th:src="@{/js/syntaxhighlighter/shBrushJScript.js}"></script>
+<script th:src="@{/js/syntaxhighlighter/shBrushXml.js}"></script>
+<script th:src="@{/js/syntaxhighlighter/shBrushCss.js}"></script>
+<script th:src="@{/js/syntaxhighlighter/shBrushPowerShell.js}"></script>
+<script th:src="@{/js/syntaxhighlighter/shBrushPlain.js}"></script>
+<script th:src="@{/js/syntaxhighlighter/shBrushCSharp.js}"></script>
+<script th:src="@{/js/syntaxhighlighter/shBrushJava.js}"></script>
+<script id="dsq-count-scr" src="//johnspade.disqus.com/count.js" async="async"></script>
 <script th:inline="javascript">
     /*<![CDATA[*/
     var data = /*[[${tree}]]*/ null;

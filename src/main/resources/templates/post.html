@@ -4,26 +4,26 @@
       layout:decorator="layout">
 <head>
     <meta th:if="${!#strings.isEmpty(post.description)}" th:content="${post.description}" name="description" />
-    <title th:text="${post.title}" ></title>
+    <title th:text="${post.title}"></title>
 </head>
 <body>
 <div layout:fragment="content">
     <div class="page-header">
-        <h3 th:text="${post.title}" ></h3>
+        <h3 th:text="${post.title}"></h3>
     </div>
-    <div th:utext="${post.body}" ></div>
+    <div th:utext="${post.body}"></div>
     <div class="related">
         <div class="related-text">Прочитайте также:</div>
         <a class="related-link" th:each="r : ${related}" th:href="@{/posts/{id}(id = ${r.id})}">
-            <div class="related-image" thmb:thumbnail="${r.body}" ></div>
-            <div class="related-title" th:text="${r.title}" ></div>
+            <div class="related-image" thmb:thumbnail="${r.body}"></div>
+            <div class="related-title" th:text="${r.title}"></div>
         </a>
     </div>
     <p class="post-footer">
-        Опубликовано <i><span th:text="${#dates.format(post.date, 'dd.MM.yyyy')}" ></span></i>
+        Опубликовано <i><span th:text="${#dates.format(post.date, 'dd.MM.yyyy')}"></span></i>
         <span th:if="${!#strings.isEmpty(post.tags)}">
             с ярлыками: <a class="label label-primary" th:each="tag : ${#strings.arraySplit(post.tags, ',')}"
-                           th:href="@{/posts(tag = ${tag})}" th:text="${tag}" ></a>
+                           th:href="@{/posts(tag = ${tag})}" th:text="${tag}"></a>
         </span>
     </p>
     <div sec:authorize="hasRole('ROLE_ADMIN')" id="edit-btns">
@@ -35,23 +35,23 @@
             </button>
         </form>
     </div>
-    <!--<div>-->
-        <!--<div id="disqus_thread"></div>-->
-        <!--<script th:inline="javascript">-->
-            <!--/*<![CDATA[*/-->
-            <!--var disqus_config = function () {-->
-                <!--this.page.url = /*[[${#httpServletRequest.requestURL.toString()}]]*/ '';-->
-                <!--this.page.identifier = /*[[${post.id}]]*/ '';-->
-            <!--};-->
-            <!--(function () {-->
-                <!--var d = document, s = d.createElement('script');-->
-                <!--s.src = '//johnspade.disqus.com/embed.js';-->
-                <!--s.setAttribute('data-timestamp', +new Date());-->
-                <!--(d.head || d.body).appendChild(s);-->
-            <!--})();-->
-            <!--/*]]>*/-->
-        <!--</script>-->
-    <!--</div>-->
+    <div>
+        <div id="disqus_thread"></div>
+        <script th:inline="javascript">
+            /*<![CDATA[*/
+            var disqus_config = function () {
+                this.page.url = /*[[${#httpServletRequest.requestURL.toString()}]]*/ '';
+                this.page.identifier = /*[[${post.id}]]*/ '';
+            };
+            (function () {
+                var d = document, s = d.createElement('script');
+                s.src = '//johnspade.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+            /*]]>*/
+        </script>
+    </div>
 </div>
 </body>
 </html>

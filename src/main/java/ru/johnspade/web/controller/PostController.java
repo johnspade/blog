@@ -24,7 +24,7 @@ import java.util.Random;
 @Controller
 public class PostController {
 
-	private static final int RELATED_COUNT = 3;
+	private static final int RELATED_COUNT = 4;
 	@Autowired
 	private PostService postService;
 	@Autowired

@@ -8,10 +8,11 @@
 <body>
 <div layout:fragment="content">
     <div th:each="tag : ${tags}" th:if="${!#lists.isEmpty(tag.posts)}">
-        <a th:href="@{/posts(tag = ${tag.name})}"><h3 th:text="${tag.name}" ></h3></a>
+        <a th:href="@{/posts(tag = ${tag.name})}"><h3 th:text="${tag.name}"></h3></a>
         <ol>
             <li th:each="post : ${tag.posts}">
-                <a th:href="@{/posts/{id}(id = ${post.id})}" th:text="${post.title}" ></a>
+                <a th:href="@{/posts/{id}(id = ${post.id})}" th:text="${post.title}"></a>
+                <span th:if="${post.recent}" class="label label-default">NEW</span>
             </li>
         </ol>
     </div>
