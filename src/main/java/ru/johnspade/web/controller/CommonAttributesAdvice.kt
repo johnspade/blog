@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ModelAttribute
-import ru.johnspade.dao.SettingsService
 import ru.johnspade.service.PostService
+import ru.johnspade.service.SettingsService
 import ru.johnspade.service.TagService
 
 data class PostInfo(val id: Int, val title: String, val recent: Boolean)

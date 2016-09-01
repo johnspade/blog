@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import org.springframework.web.servlet.view.feed.AbstractRssFeedView
-import ru.johnspade.dao.SettingsService
 import ru.johnspade.service.PostService
+import ru.johnspade.service.SettingsService
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 

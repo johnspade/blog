@@ -6,7 +6,7 @@ import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import ru.johnspade.dao.Settings
-import ru.johnspade.dao.SettingsService
+import ru.johnspade.service.SettingsService
 
 @Controller
 class SettingsController {

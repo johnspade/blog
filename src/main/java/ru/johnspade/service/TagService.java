@@ -14,7 +14,7 @@ import java.util.List;
 public class TagService {
 
 	@Autowired
-	TagRepository repository;
+	private TagRepository repository;
 
 	public boolean exists(String tagName) {
 		return repository.exists(tagName);

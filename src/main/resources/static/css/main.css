@@ -45,7 +45,7 @@
 
 .related {
     margin-top: 30px;
-    height: 250px;
+    display: table;
 }
 
 .related-text {
@@ -55,7 +55,7 @@
 
 .related-link {
     padding: 10px;
-    display: block;
+    display: table-column;
     float: left;
     overflow: hidden;
     height: 200px;

@@ -7,6 +7,9 @@
 </head>
 <body>
 <div layout:fragment="content">
+    <div class="page-header">
+        <h3>Содержание</h3>
+    </div>
     <div th:each="tag : ${tags}" th:if="${!#lists.isEmpty(tag.posts)}">
         <a th:href="@{/posts(tag = ${tag.name})}"><h3 th:text="${tag.name}"></h3></a>
         <ol>

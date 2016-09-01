@@ -31,7 +31,7 @@ public class PostService {
 	@Autowired
 	private CacheService cacheService;
 	@Autowired
-	PostRepository repository;
+	private PostRepository repository;
 	@Autowired
 	private Rss rss;
 
