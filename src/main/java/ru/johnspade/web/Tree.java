@@ -5,11 +5,11 @@ import java.util.List;
 
 public class Tree {
 
-	String text;
-	List<Tree> nodes;
-	String href;
-	NodeState state;
-	List<String> tags;
+	private String text;
+	private List<Tree> nodes;
+	private String href;
+	private NodeState state;
+	private List<String> tags;
 
 	public Tree(String text, NodeState state, List<Tree> nodes, String href) {
 		this.text = text;
@@ -18,8 +18,8 @@ public class Tree {
 		this.href = href;
 	}
 
-	public Tree(String text) {
-		this(text, new NodeState(), new ArrayList<Tree>(), null);
+	public Tree(String text, boolean expanded) {
+		this(text, new NodeState(expanded), new ArrayList<Tree>(), null);
 	}
 
 	public String getText() {
@@ -50,6 +50,10 @@ public class Tree {
 
 	public void setTags(List<String> tags) {
 		this.tags = tags;
+	}
+
+	public void expand(boolean expand) {
+		this.state.setExpanded(expand);
 	}
 
 }

@@ -14,12 +14,11 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 @Component("rss")
-open class Rss : AbstractRssFeedView() {
+open class Rss private @Autowired constructor(
+		private val postService: PostService,
+		private val settingsService: SettingsService
+) : AbstractRssFeedView() {
 
-	@Autowired
-	private lateinit var postService: PostService
-	@Autowired
-	private lateinit var settingsService: SettingsService
 	@Value("\${blog.url}")
 	private lateinit var baseUrl: String
 

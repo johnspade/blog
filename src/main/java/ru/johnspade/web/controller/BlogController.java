@@ -23,10 +23,16 @@ import java.util.List;
 @Controller
 public class BlogController {
 
+	private final PostService postService;
+	private final TagService tagService;
+	private final Rss rss;
+
 	@Autowired
-	private PostService postService;
-	@Autowired
-	private TagService tagService;
+	public BlogController(PostService postService, TagService tagService, Rss rss) {
+		this.postService = postService;
+		this.tagService = tagService;
+		this.rss = rss;
+	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String login() {
@@ -76,7 +82,7 @@ public class BlogController {
 
 	@RequestMapping(value = "/rss", method = RequestMethod.GET)
 	public Rss rss() {
-		return postService.getRss();
+		return rss;
 	}
 
 	@RequestMapping(value = "/robots.txt", method = RequestMethod.GET)

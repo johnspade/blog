@@ -12,14 +12,11 @@ data class PostInfo(val id: Int, val title: String, val recent: Boolean)
 data class TagInfo(val name: String, val posts: List<PostInfo>)
 
 @ControllerAdvice
-class CommonAttributesAdvice {
-
-	@Autowired
-	private lateinit var tagService: TagService
-	@Autowired
-	private lateinit var postService: PostService
-	@Autowired
-	private lateinit var settingsService: SettingsService
+class CommonAttributesAdvice @Autowired constructor(
+		private val tagService: TagService,
+		private val postService: PostService,
+		private val settingsService: SettingsService
+) {
 
 	@ModelAttribute
 	fun getAttributes(model: Model) {
@@ -27,7 +24,7 @@ class CommonAttributesAdvice {
 		model.addAttribute("title", settings.title)
 		model.addAttribute("description", settings.description)
 		model.addAttribute("about", settings.about)
-		model.addAttribute("tree", postService.tree)
+		model.addAttribute("tree", postService.getTree(null))
 		val recentPosts = postService.findAll(0)
 		model.addAttribute("tags", tagService.findAll().map {
 			TagInfo(it.name, it.posts.map { p -> PostInfo(p.id, p.title, recentPosts.any { it.id == p.id }) })

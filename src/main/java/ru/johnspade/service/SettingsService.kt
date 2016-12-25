@@ -11,13 +11,10 @@ import ru.johnspade.dao.Settings
  * Весь репозиторий не нужен, но мне лень самому доставать сущность из Hibernate
  */
 @Repository
-private interface SettingsRepository: CrudRepository<Settings, String> {}
+private interface SettingsRepository: CrudRepository<Settings, String>
 
 @Service
-class SettingsService {
-
-	@Autowired
-	private lateinit var settingsRepository: SettingsRepository
+class SettingsService private @Autowired constructor(private val settingsRepository: SettingsRepository) {
 
 	fun getSettings(): Settings {
 		return settingsRepository.findOne(SETTINGS_ID) ?: Settings()

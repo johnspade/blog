@@ -18,6 +18,7 @@ import ru.johnspade.web.PostModel;
 import ru.johnspade.web.ResourceNotFoundException;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
 
@@ -25,10 +26,14 @@ import java.util.Random;
 public class PostController {
 
 	private static final int RELATED_COUNT = 4;
+	private final PostService postService;
+	private final TagService tagService;
+
 	@Autowired
-	private PostService postService;
-	@Autowired
-	private TagService tagService;
+	public PostController(PostService postService, TagService tagService) {
+		this.postService = postService;
+		this.tagService = tagService;
+	}
 
 	@RequestMapping(value = "/new", method = RequestMethod.GET)
 	public String create(Model model) {
@@ -57,6 +62,9 @@ public class PostController {
 			}
 			model.addAttribute("post", new PostModel(post));
 			model.addAttribute("related", related);
+			final Calendar cal = Calendar.getInstance();
+			cal.setTime(post.getDate());
+			model.addAttribute("tree", postService.getTree(cal));
 		}
 		else
 			throw new ResourceNotFoundException("Пост не найден");

@@ -33,20 +33,15 @@ public class Post {
 	@Column
 	private String description;
 
-	@ManyToMany(fetch = FetchType.LAZY)
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "tag_post", joinColumns = @JoinColumn(name = "post_id"),
 			inverseJoinColumns = @JoinColumn(name = "tag_name"))
 	private List<Tag> tags;
 
-	@SuppressWarnings("unused")
-	public Post(String title, String body) {
-		setTitle(title);
-		setDate(new Date());
-		setBody(body);
-	}
-
 	public Post() {
-		this("", "");
+		title = "";
+		date = new Date();
+		body = "";
 	}
 
 	public int getId() {

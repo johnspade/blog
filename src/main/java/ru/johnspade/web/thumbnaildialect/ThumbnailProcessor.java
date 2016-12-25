@@ -12,7 +12,7 @@ import org.thymeleaf.standard.processor.attr.AbstractStandardSingleAttributeModi
 
 public class ThumbnailProcessor extends AbstractStandardSingleAttributeModifierAttrProcessor {
 
-	public ThumbnailProcessor() {
+	ThumbnailProcessor() {
 		super("thumbnail");
 	}
 

@@ -9,10 +9,7 @@ import ru.johnspade.dao.Settings
 import ru.johnspade.service.SettingsService
 
 @Controller
-class SettingsController {
-
-	@Autowired
-	private lateinit var settingsService: SettingsService
+class SettingsController private @Autowired constructor(val settingsService: SettingsService) {
 
 	@RequestMapping(value = "/settings", method = arrayOf(RequestMethod.GET))
 	fun read(model: Model): String {
